@@ -63,6 +63,7 @@ static void HighlightSelectedMainMenuItem(u8, u8, s16);
 static void Task_HandleMainMenuInput(u8);
 static void Task_HandleMainMenuAPressed(u8);
 static void Task_HandleMainMenuBPressed(u8);
+static void Task_NewGameTesterSimplified(u8);
 static void Task_NewGameBirchSpeech_Init(u8);
 static void Task_DisplayMainMenuInvalidActionError(u8);
 static void AddBirchSpeechObjects(u8);
@@ -1157,13 +1158,26 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
     AddBirchSpeechObjects(taskId);
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, 0);
     gTasks[taskId].tBG1HOFS = 0;
-    gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowBirch;
+    gTasks[taskId].func = Task_NewGameTesterSimplified;//Task_NewGameBirchSpeech_WaitToShowBirch;
     gTasks[taskId].tPlayerSpriteId = 0xFF;
     gTasks[taskId].data[3] = 0xFF;
     gTasks[taskId].tTimer = 0xD8;
     PlayBGM(MUS_DOORO_X4);
     ShowBg(0);
     ShowBg(1);
+}
+
+const u8 GARAK[] = _("GARAK");
+
+static void Task_NewGameTesterSimplified(u8 taskId) {
+    int i;
+    gSaveBlock2Ptr->playerGender = MALE;
+    for (i = 0; i < 6; i++) gSaveBlock2Ptr->playerName[i] = GARAK[i];
+    gSaveBlock2Ptr->playerName[6] = 0xFF;
+
+    //FreeAllWindowBuffers();
+    SetMainCallback2(CB2_NewGame);
+    DestroyTask(taskId);
 }
 
 static void Task_NewGameBirchSpeech_WaitToShowBirch(u8 taskId)
