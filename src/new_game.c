@@ -59,6 +59,7 @@ extern const u8 EventScript_2715DE[];
 // this file's functions
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
+static void WarpToTestMap(void);
 static void ResetMiniGamesResults(void);
 
 // EWRAM vars
@@ -140,6 +141,12 @@ static void WarpToTruck(void)
     WarpIntoMap();
 }
 
+static void WarpToTestMap(void)
+{
+    SetWarpDestination(MAP_GROUP(TESTER), MAP_NUM(TESTER), -1, -1, -1);
+    WarpIntoMap();
+}
+
 void Sav2_ClearSetDefault(void)
 {
     ClearSav2();
@@ -202,7 +209,7 @@ void NewGameInitData(void)
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
-    WarpToTruck();
+    WarpToTestMap();
     ScriptContext2_RunNewScript(EventScript_2715DE);
     ResetMiniGamesResults();
     copy_strings_to_sav1();
